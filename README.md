@@ -12,6 +12,14 @@ This project is now configured as a **Vite** application.
 2.  **Build Command**: `vite build`
 3.  **Output Directory**: `dist`
 
+### Running Locally (Important)
+
+Because this is a modern Vite app, **you cannot simply open `index.html` in your browser**. You must run a local server:
+
+1.  Install dependencies: `npm install`
+2.  Start the server: `npm run dev`
+3.  Open the link provided (usually `http://localhost:5173`).
+
 ### GitHub Integration
 
 1.  Push your code:
