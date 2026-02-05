@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Brownie Verse - Experience the ultimate luxury in every bite. Artisanal, handcrafted brownies.">
+    <title>Brownie Verse | Luxury Artisan Desserts</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Icons (using simple text/svg placeholders/font-awesome cdn if needed, for now standard text/css shapes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="custom-cursor"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Brownie Verse</div>
+                <div class="nav-links hide-mobile">
+                    <a href="#features">Craftsmanship</a>
+                    <a href="#testimonials">Reviews</a>
+                    <a href="#shop" class="btn-outline">Shop Now</a>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <img id="hero-sequence" src="images/herosec/ezgif-frame-001.jpg"
+                alt="Luxurious dark chocolate brownie animation">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="container">
+            <div class="hero-content">
+                <h1>Decadence Redefined.</h1>
+                <p>Handcrafted using the world’s finest cacao and gold leaf details. A symphony of texture and taste
+                    awaiting your indulgence.</p>
+                <div class="hero-actions">
+                    <a href="#shop" class="btn">Discover the Collection</a>
+                    <a href="#story" class="btn-outline" style="margin-left: 1rem; border: none;">Our Story</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imgElement = document.getElementById('hero-sequence');
+            const totalFrames = 240;
+            const frameDelay = 35;
+            let currentFrame = 1;
+
+            const preloadImages = () => {
+                for (let i = 1; i <= totalFrames; i++) {
+                    const img = new Image();
+                    const frameNumber = i.toString().padStart(3, '0');
+                    img.src = `images/herosec/ezgif-frame-${frameNumber}.jpg`;
+                }
+            };
+
+            preloadImages();
+
+            function updateFrame() {
+                if (currentFrame < totalFrames) {
+                    currentFrame++;
+                    const frameNumber = currentFrame.toString().padStart(3, '0');
+                    imgElement.src = `images/herosec/ezgif-frame-${frameNumber}.jpg`;
+                } else {
+                    clearInterval(animationInterval);
+                }
+            }
+
+            const animationInterval = setInterval(updateFrame, frameDelay);
+
+            // Theme Toggle Logic
+            const toggleBtn = document.getElementById('theme-toggle');
+            const body = document.body;
+            const icon = toggleBtn.querySelector('i');
+
+            // Check for saved user preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-mode');
+                icon.classList.replace('fa-moon', 'fa-sun');
+            }
+
+            toggleBtn.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+
+                if (body.classList.contains('light-mode')) {
+                    localStorage.setItem('theme', 'light');
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    localStorage.setItem('theme', 'dark');
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                }
+            });
+
+            // Custom Cursor Logic
+            const cursor = document.querySelector('.custom-cursor');
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+        });
+    </script>
+
+
+    <!-- Features Section -->
+    <section id="features" class="section-padding features">
+        <div class="container text-center">
+            <h2 class="section-title">The Art of the Brownie</h2>
+            <p class="section-subtitle">Meticulously crafted for the discerning palate.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-gem"></i></div>
+                    <h3>Premium Ingredients</h3>
+                    <p>Sourced from sustainable estates in Ecuador and Madagascar, our single-origin chocolate offers
+                        depth and complexity.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <h3>Small Batch Artisan</h3>
+                    <p>Baked daily in limited quantities to ensure perfect fudgy texture and a crackly crust every
+                        single time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fa-solid fa-gift"></i></div>
+                    <h3>Luxury Packaging</h3>
+                    <p>Each box is a visually stunning gift, wrapped in our signature gold-foil paper and encased in
+                        velvet-touch boxes that exude elegance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section-padding testimonials">
+        <div class="container text-center">
+            <h2 class="section-title">Epicurean Praise</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial-item">
+                    <blockquote>"The most exquisite dessert I have ever tasted. The balance of bitterness and sweet is
+                        absolute perfection."</blockquote>
+                    <p class="testimonial-author">— Julian V., Michelin Guide Reviewer</p>
+                </div>
+                <div class="testimonial-item">
+                    <blockquote>"A transcendental experience. The texture is impossibly fudgy, and the flavor lingers
+                        like a fond memory."</blockquote>
+                    <p class="testimonial-author">— Isabella R., Food Critic</p>
+                </div>
+                <div class="testimonial-item">
+                    <blockquote>"I ordered these for a corporate gala, and they were the talk of the evening. Simply
+                        world-class."</blockquote>
+                    <p class="testimonial-author">— Marcus T., Event Planner</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section id="shop" class="section-padding cta-section">
+        <div class="container cta-content">
+            <h2>Experience the Divine</h2>
+            <p style="color: var(--color-cream-100); margin-bottom: 2rem; font-size: 1.2rem;">Limited batches available
+                weekly. Reserve yours today.</p>
+            <a href="#" class="btn">Order Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <a href="#" class="footer-logo">Brownie Verse</a>
+            <p>&copy; 2024 Brownie Verse. All rights reserved.</p>
+            <div style="margin-top: 1rem;">
+                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
