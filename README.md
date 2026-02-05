@@ -4,15 +4,17 @@ A luxury artisan brownie brand landing page.
 
 ## Deployment Guide
 
-### Option 1: Vercel CLI
+### Deployment
 
-1.  Install Vercel CLI: `npm i -g vercel`
-2.  Run `vercel` in this directory.
-3.  Follow the prompts to deploy to production.
+This project is now configured as a **Vite** application.
 
-### Option 2: GitHub Integration
+1.  **Framework Preset**: When deploying to Vercel, the "Vite" preset should be automatically detected.
+2.  **Build Command**: `vite build`
+3.  **Output Directory**: `dist`
 
-1.  Initialize a git repository:
+### GitHub Integration
+
+1.  Push your code:
     ```bash
     git init
     git add .
