@@ -46,7 +46,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-background">
-            <img id="hero-sequence" src="images/herosec/ezgif-frame-001.jpg"
+            <img id="hero-sequence" src="/images/herosec/ezgif-frame-001.jpg"
                 alt="Luxurious dark chocolate brownie animation">
             <div class="hero-overlay"></div>
         </div>
@@ -66,7 +66,16 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Determine base path based on environment (local file vs server)
+            const isLocalFile = window.location.protocol === 'file:';
+            const basePath = isLocalFile ? 'public/images/herosec/' : '/images/herosec/';
+
+            console.log('Environment:', isLocalFile ? 'Local File' : 'Server', '| Base Path:', basePath);
+
             const imgElement = document.getElementById('hero-sequence');
+            // Set initial frame dynamically
+            imgElement.src = `${basePath}ezgif-frame-001.jpg`;
+
             const totalFrames = 240;
             const frameDelay = 35;
             let currentFrame = 1;
@@ -75,18 +84,24 @@
                 for (let i = 1; i <= totalFrames; i++) {
                     const img = new Image();
                     const frameNumber = i.toString().padStart(3, '0');
-                    img.src = `images/herosec/ezgif-frame-${frameNumber}.jpg`;
+                    img.src = `${basePath}ezgif-frame-${frameNumber}.jpg`;
                 }
             };
 
             preloadImages();
 
+            // Debugging
+            imgElement.onerror = function () {
+                console.error('Error loading image:', imgElement.src);
+            };
+
             function updateFrame() {
                 if (currentFrame < totalFrames) {
                     currentFrame++;
                     const frameNumber = currentFrame.toString().padStart(3, '0');
-                    imgElement.src = `images/herosec/ezgif-frame-${frameNumber}.jpg`;
+                    imgElement.src = `${basePath}ezgif-frame-${frameNumber}.jpg`;
                 } else {
+                    console.log('Animation finished');
                     clearInterval(animationInterval);
                 }
             }
