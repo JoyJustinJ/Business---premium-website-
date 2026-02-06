@@ -29,18 +29,26 @@
     <header>
         <div class="container">
             <nav>
-                <div class="logo">Brownie Verse</div>
+                <div class="logo">
+                    <span class="brand-text">Brownie Verse</span>
+                </div>
+                <button class="hamburger" aria-label="Toggle Navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="nav-links hide-mobile">
                     <a href="#features">Craftsmanship</a>
+                    <a href="#about">About</a>
                     <a href="#testimonials">Reviews</a>
-                    <a href="#shop" class="btn-outline">Shop Now</a>
-                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
-                        <i class="fa-solid fa-moon"></i>
-                    </button>
+                    <a href="#contact">Contact</a>
                 </div>
             </nav>
         </div>
     </header>
+
+    <!-- Floating Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+        <i class="fa-solid fa-moon"></i>
+    </button>
 
     <!-- Hero Section -->
     <!-- Hero Section -->
@@ -67,13 +75,31 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Determine base path based on environment (local file vs server)
             const isLocalFile = window.location.protocol === 'file:';
-            const basePath = isLocalFile ? 'public/images/herosec/' : '/images/herosec/';
+            // If local file, we need to point to 'public/images/...'. If server, just '/images/...'
+            const imgPathPrefix = isLocalFile ? 'public/images/' : '/images/';
+            const heroPath = isLocalFile ? 'public/images/herosec/' : '/images/herosec/';
 
-            console.log('Environment:', isLocalFile ? 'Local File' : 'Server', '| Base Path:', basePath);
+            console.log('Environment:', isLocalFile ? 'Local File' : 'Server');
 
+            // 1. Update Brand Logo (Header and Footer)
+            const logos = document.querySelectorAll('.brand-logo');
+            logos.forEach(logo => {
+                logo.src = `${imgPathPrefix}logo.png`;
+            });
+
+            // 2. Update CTA Section Background
+            const ctaSection = document.querySelector('.cta-section');
+            if (ctaSection) {
+                // Keep the gradient, just update the URL
+                ctaSection.style.backgroundImage = `linear-gradient(rgba(15, 10, 6, 0.1), rgba(15, 10, 6, 0.1)), url('${imgPathPrefix}hero.png')`;
+            }
+
+            // 3. Hero Sequence Logic
             const imgElement = document.getElementById('hero-sequence');
             // Set initial frame dynamically
-            imgElement.src = `${basePath}ezgif-frame-001.jpg`;
+            if (imgElement) {
+                imgElement.src = `${heroPath}ezgif-frame-001.jpg`;
+            }
 
             const totalFrames = 240;
             const frameDelay = 35;
@@ -83,22 +109,26 @@
                 for (let i = 1; i <= totalFrames; i++) {
                     const img = new Image();
                     const frameNumber = i.toString().padStart(3, '0');
-                    img.src = `${basePath}ezgif-frame-${frameNumber}.jpg`;
+                    img.src = `${heroPath}ezgif-frame-${frameNumber}.jpg`;
                 }
             };
 
             preloadImages();
 
             // Debugging
-            imgElement.onerror = function () {
-                console.error('Error loading image:', imgElement.src);
-            };
+            if (imgElement) {
+                imgElement.onerror = function () {
+                    console.error('Error loading image:', imgElement.src);
+                };
+            }
 
             function updateFrame() {
                 if (currentFrame < totalFrames) {
                     currentFrame++;
                     const frameNumber = currentFrame.toString().padStart(3, '0');
-                    imgElement.src = `${basePath}ezgif-frame-${frameNumber}.jpg`;
+                    if (imgElement) {
+                        imgElement.src = `${heroPath}ezgif-frame-${frameNumber}.jpg`;
+                    }
                 } else {
                     console.log('Animation finished');
                     clearInterval(animationInterval);
@@ -137,6 +167,33 @@
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
             });
+
+            // Mobile Menu Toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                // Optional: Toggle icon between bars and times (X)
+                const icon = hamburger.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.replace('fa-bars', 'fa-xmark');
+                    hamburger.setAttribute('aria-expanded', 'true');
+                } else {
+                    icon.classList.replace('fa-xmark', 'fa-bars');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    const icon = hamburger.querySelector('i');
+                    icon.classList.replace('fa-xmark', 'fa-bars');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                });
+            });
         });
     </script>
 
@@ -166,6 +223,22 @@
                     <p>Each box is a visually stunning gift, wrapped in our signature gold-foil paper and encased in
                         velvet-touch boxes that exude elegance.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding about-section">
+        <div class="container text-center">
+            <h2 class="section-title">Our Story</h2>
+            <p class="section-subtitle">A heritage of sweetness.</p>
+            <div class="about-content">
+                <p>Born from a passion for perfection, Brownie Verse was established to redefine the art of dessert. We
+                    believe that a brownie is not just a treat, but an experience. Our master bakers hand-select every
+                    ingredient, ensuring that each bite conveys a story of luxury, craftsmanship, and pure indulgence.
+                </p>
+                <p>From our kitchen to your table, we invite you to partake in a journey of taste that celebrates the
+                    finer things in life.</p>
             </div>
         </div>
     </section>
@@ -200,19 +273,40 @@
             <h2>Experience the Divine</h2>
             <p style="color: var(--color-cream-100); margin-bottom: 2rem; font-size: 1.2rem;">Limited batches available
                 weekly. Reserve yours today.</p>
-            <a href="#" class="btn">Order Now</a>
+            <a href="https://www.instagram.com/brownie_verse_06/" class="btn" target="_blank">Order Now</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-padding contact-section">
+        <div class="container text-center">
+            <h2 class="section-title">Get in Touch</h2>
+            <p class="section-subtitle">We would love to hear from you.</p>
+            <div class="contact-links">
+                <a href="https://www.instagram.com/brownie_verse_06/" target="_blank" class="contact-item">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>@brownie_verse_06</span>
+                </a>
+                <a href="mailto:madeehairam6@gmail.com" class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>madeehairam6@gmail.com</span>
+                </a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="container">
-            <a href="#" class="footer-logo">Brownie Verse</a>
+            <a href="#" class="footer-logo">
+                <span class="brand-text">Brownie Verse</span>
+                <img src="/images/logo.png" alt="Brownie Verse" class="brand-logo footer-icon">
+            </a>
             <p>&copy; 2024 Brownie Verse. All rights reserved.</p>
             <div style="margin-top: 1rem;">
-                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" style="margin: 0 10px;"><i class="fa-brands fa-twitter"></i></a>
+                <a href="https://www.instagram.com/brownie_verse_06/" target="_blank" style="margin: 0 10px;"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="mailto:madeehairam6@gmail.com" style="margin: 0 10px;"><i class="fa-solid fa-envelope"></i></a>
             </div>
         </div>
     </footer>
